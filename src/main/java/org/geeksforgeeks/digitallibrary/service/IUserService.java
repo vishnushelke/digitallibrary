@@ -1,14 +1,14 @@
 package org.geeksforgeeks.digitallibrary.service;
 
-import org.geeksforgeeks.digitallibrary.entity.UserEntity;
+import org.geeksforgeeks.digitallibrary.models.UserDto;
 
 public interface IUserService {
 
-    UserEntity createUser(UserEntity user);
+    UserDto createUser(UserDto user);
 
-    UserEntity getUserById(int id);
+    UserDto getUserById(int id);
 
-    UserEntity updateUser(UserEntity user);
+    UserDto updateUser(int id, UserDto user);
 
-    void deleteUserById(int id);
+    String deleteUserById(int id);
 }

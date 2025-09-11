@@ -1,11 +1,14 @@
 package org.geeksforgeeks.digitallibrary.controller;
 
 
-import org.geeksforgeeks.digitallibrary.entity.UserEntity;
+import org.geeksforgeeks.digitallibrary.models.DigitalLibraryResponse;
+import org.geeksforgeeks.digitallibrary.models.UserDto;
 import org.geeksforgeeks.digitallibrary.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.geeksforgeeks.digitallibrary.utils.Constants.SUCCESS_STATUS;
 
 @RestController
 @RequestMapping("/user")
@@ -17,30 +20,23 @@ public class UserController {
         this.service = service;
     }
 
-
-    @GetMapping("/health")
-    public ResponseEntity<?> healthCheck() {
-        return new ResponseEntity<>("I am Alive!!", HttpStatus.OK);
-    }
-
     @PostMapping("/create")
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
-        return new ResponseEntity<>(this.service.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<DigitalLibraryResponse<UserDto>> createUser(@RequestBody UserDto user) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.createUser(user), null), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUser(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(this.service.getUserById(id), HttpStatus.OK);
+    public ResponseEntity<DigitalLibraryResponse<UserDto>> getUser(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.getUserById(id), null), HttpStatus.OK);
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity user) {
-        return new ResponseEntity<>(this.service.updateUser(user), HttpStatus.OK);
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<DigitalLibraryResponse<UserDto>> updateUser(@PathVariable int id, @RequestBody UserDto user) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.updateUser(id, user), null), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Integer id) {
-        this.service.deleteUserById(id);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+    public ResponseEntity<DigitalLibraryResponse<String>> deleteUser(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.deleteUserById(id), null), HttpStatus.OK);
     }
 }

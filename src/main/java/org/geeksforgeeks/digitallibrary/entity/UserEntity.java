@@ -1,6 +1,8 @@
 package org.geeksforgeeks.digitallibrary.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +15,8 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonSerialize
+@JsonDeserialize
 
 @Entity
 @Table(name = "users")
@@ -30,6 +34,6 @@ public class UserEntity {
     private String lastName;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", columnDefinition = "varchar(32) NOT NULL")
     private LocalDate dateOfBirth;
 }

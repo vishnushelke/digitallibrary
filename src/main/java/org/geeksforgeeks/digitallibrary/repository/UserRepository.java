@@ -3,6 +3,7 @@ package org.geeksforgeeks.digitallibrary.repository;
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,5 +29,9 @@ public class UserRepository {
 
     public void deleteUserById(int id) {
         this.jpaRepository.deleteById(id);
+    }
+
+    public List<UserEntity> getAllUsers() {
+        return this.jpaRepository.findAll();
     }
 }
