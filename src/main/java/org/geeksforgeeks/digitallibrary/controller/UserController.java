@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<DigitalLibraryResponse<UserDto>> updateUser(@PathVariable int id, @RequestBody UserDto user) {
+    public ResponseEntity<DigitalLibraryResponse<UserDto>> updateUser(@PathVariable Integer id, @RequestBody UserDto user) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.updateUser(id, user), null), HttpStatus.OK);
     }
 
