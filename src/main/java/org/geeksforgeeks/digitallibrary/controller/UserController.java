@@ -2,7 +2,8 @@ package org.geeksforgeeks.digitallibrary.controller;
 
 
 import org.geeksforgeeks.digitallibrary.models.DigitalLibraryResponse;
-import org.geeksforgeeks.digitallibrary.models.UserDto;
+import org.geeksforgeeks.digitallibrary.models.CreateUserDto;
+import org.geeksforgeeks.digitallibrary.models.UpdateUserDto;
 import org.geeksforgeeks.digitallibrary.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +22,23 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<DigitalLibraryResponse<UserDto>> createUser(@RequestBody UserDto user) {
+    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> createUser(@RequestBody CreateUserDto user) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.createUser(user), null), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DigitalLibraryResponse<UserDto>> getUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> getUser(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.getUserById(id), null), HttpStatus.OK);
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<DigitalLibraryResponse<UserDto>> updateUser(@PathVariable Integer id, @RequestBody UserDto user) {
+    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> updateUser(@PathVariable Integer id, @RequestBody UpdateUserDto user) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.updateUser(id, user), null), HttpStatus.OK);
+    }
+
+    @PatchMapping("/activate/{id}")
+    public ResponseEntity<DigitalLibraryResponse<String>> activateUser(@PathVariable Integer id) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.activateUserById(id), null), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

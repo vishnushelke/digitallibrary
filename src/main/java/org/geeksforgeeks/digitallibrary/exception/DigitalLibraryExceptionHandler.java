@@ -26,4 +26,19 @@ public class DigitalLibraryExceptionHandler extends RuntimeException {
     public ResponseEntity<DigitalLibraryResponse<?>> handleUserNotFoundException(UserNotFoundException e) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InActiveUserException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleInActiveUserException(InActiveUserException e){
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserAlreadyActiveException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleUserAlreadyActiveException(UserAlreadyActiveException e){
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserAlreadyInActiveException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleUserAlreadyInActiveException(UserAlreadyInActiveException e){
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
 }

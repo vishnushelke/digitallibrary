@@ -2,12 +2,14 @@ package org.geeksforgeeks.digitallibrary.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
-import org.geeksforgeeks.digitallibrary.exception.DuplicateUser;
-import org.geeksforgeeks.digitallibrary.exception.UserNotFoundException;
-import org.geeksforgeeks.digitallibrary.models.UserDto;
+import org.geeksforgeeks.digitallibrary.exception.*;
+import org.geeksforgeeks.digitallibrary.models.CreateUserDto;
+import org.geeksforgeeks.digitallibrary.models.UpdateUserDto;
 import org.geeksforgeeks.digitallibrary.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -24,32 +26,51 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public UserDto createUser(UserDto user) {
-        if (this.repository.getAllUsers().stream().anyMatch(e -> e.getFirstName().equals(user.getFirstName()) && e.getLastName().equals(user.getLastName())))
+    public CreateUserDto createUser(CreateUserDto user) {
+        List<UserEntity> users = this.repository.getAllUsers();
+        if (users.stream().anyMatch(e -> e.getEmail().equals(user.getEmail()) && e.isActive()))
             throw new DuplicateUser();
+        if (users.stream().anyMatch(e -> !e.isActive() && e.getEmail().equals(user.getEmail())))
+            throw new InActiveUserException();
+
         UserEntity entity = this.modelMapper.map(user, UserEntity.class);
         this.repository.createUser(entity);
         return user;
     }
 
     @Override
-    public UserDto getUserById(int id) {
+    public CreateUserDto getUserById(int id) {
         UserEntity entity = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
-        return this.modelMapper.map(entity, UserDto.class);
+        if (!entity.isActive()) throw new InActiveUserException();
+        return this.modelMapper.map(entity, CreateUserDto.class);
     }
 
     @Override
-    public UserDto updateUser(int id, UserDto user) {
-        this.repository.getById(id).orElseThrow(UserNotFoundException::new);
+    public CreateUserDto updateUser(int id, UpdateUserDto user) {
+        UserEntity dbUser = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
+        if (!dbUser.isActive()) throw new InActiveUserException();
         UserEntity entity = this.modelMapper.map(user, UserEntity.class);
         entity.setId(id);
+        entity.setEmail(dbUser.getEmail());
         this.repository.updateUser(entity);
-        return user;
+        return this.modelMapper.map(entity, CreateUserDto.class);
     }
 
     @Override
     public String deleteUserById(int id) {
-        this.repository.deleteUserById(id);
+        UserEntity user = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
+        if (!user.isActive()) throw new UserAlreadyInActiveException();
+        user.setActive(false);
+        this.repository.updateUser(user);
         return "User deleted with Id: " + id;
+    }
+
+    @Override
+    public String activateUserById(int id) {
+        UserEntity user = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
+        if (user.isActive()) throw new UserAlreadyActiveException();
+        user.setActive(true);
+        this.repository.updateUser(user);
+        return "User activated with Id: " + id;
     }
 }

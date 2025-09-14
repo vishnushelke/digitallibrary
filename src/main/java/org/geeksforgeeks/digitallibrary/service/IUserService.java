@@ -1,14 +1,17 @@
 package org.geeksforgeeks.digitallibrary.service;
 
-import org.geeksforgeeks.digitallibrary.models.UserDto;
+import org.geeksforgeeks.digitallibrary.models.CreateUserDto;
+import org.geeksforgeeks.digitallibrary.models.UpdateUserDto;
 
 public interface IUserService {
 
-    UserDto createUser(UserDto user);
+    CreateUserDto createUser(CreateUserDto user);
 
-    UserDto getUserById(int id);
+    CreateUserDto getUserById(int id);
 
-    UserDto updateUser(int id, UserDto user);
+    CreateUserDto updateUser(int id, UpdateUserDto user);
 
     String deleteUserById(int id);
+
+    String activateUserById(int id);
 }
