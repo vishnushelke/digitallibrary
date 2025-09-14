@@ -1,11 +1,12 @@
-package org.geeksforgeeks.digitallibrary.service;
+package org.geeksforgeeks.digitallibrary.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
-import org.geeksforgeeks.digitallibrary.exception.*;
-import org.geeksforgeeks.digitallibrary.models.CreateUserDto;
-import org.geeksforgeeks.digitallibrary.models.UpdateUserDto;
-import org.geeksforgeeks.digitallibrary.repository.UserRepository;
+import org.geeksforgeeks.digitallibrary.dto.CreateUserDto;
+import org.geeksforgeeks.digitallibrary.dto.UpdateUserDto;
+import org.geeksforgeeks.digitallibrary.exception.user.*;
+import org.geeksforgeeks.digitallibrary.repository.impl.UserRepository;
+import org.geeksforgeeks.digitallibrary.service.core.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UserServiceImpl implements IUserService {
     public CreateUserDto createUser(CreateUserDto user) {
         List<UserEntity> users = this.repository.getAllUsers();
         if (users.stream().anyMatch(e -> e.getEmail().equals(user.getEmail()) && e.isActive()))
-            throw new DuplicateUser();
+            throw new DuplicateUserException();
         if (users.stream().anyMatch(e -> !e.isActive() && e.getEmail().equals(user.getEmail())))
             throw new InActiveUserException();
 

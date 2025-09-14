@@ -1,6 +1,9 @@
 package org.geeksforgeeks.digitallibrary.exception;
 
 
+import org.geeksforgeeks.digitallibrary.exception.book.BookNotFoundException;
+import org.geeksforgeeks.digitallibrary.exception.book.DuplicateBookException;
+import org.geeksforgeeks.digitallibrary.exception.user.*;
 import org.geeksforgeeks.digitallibrary.models.DigitalLibraryResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +20,8 @@ public class DigitalLibraryExceptionHandler extends RuntimeException {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(DuplicateUser.class)
-    public ResponseEntity<DigitalLibraryResponse<?>> handleDuplicateUserException(DuplicateUser e) {
+    @ExceptionHandler(DuplicateUserException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleDuplicateUserException(DuplicateUserException e) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -28,17 +31,27 @@ public class DigitalLibraryExceptionHandler extends RuntimeException {
     }
 
     @ExceptionHandler(InActiveUserException.class)
-    public ResponseEntity<DigitalLibraryResponse<?>> handleInActiveUserException(InActiveUserException e){
+    public ResponseEntity<DigitalLibraryResponse<?>> handleInActiveUserException(InActiveUserException e) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserAlreadyActiveException.class)
-    public ResponseEntity<DigitalLibraryResponse<?>> handleUserAlreadyActiveException(UserAlreadyActiveException e){
+    public ResponseEntity<DigitalLibraryResponse<?>> handleUserAlreadyActiveException(UserAlreadyActiveException e) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserAlreadyInActiveException.class)
-    public ResponseEntity<DigitalLibraryResponse<?>> handleUserAlreadyInActiveException(UserAlreadyInActiveException e){
+    public ResponseEntity<DigitalLibraryResponse<?>> handleUserAlreadyInActiveException(UserAlreadyInActiveException e) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(DuplicateBookException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleDuplicateBookException(DuplicateBookException e) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleBookNotFoundException(BookNotFoundException e) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

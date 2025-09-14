@@ -1,4 +1,4 @@
-package org.geeksforgeeks.digitallibrary.exception;
+package org.geeksforgeeks.digitallibrary.exception.user;
 
 public class InActiveUserException extends RuntimeException {
     public InActiveUserException() {

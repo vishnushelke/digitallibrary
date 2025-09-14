@@ -2,9 +2,9 @@ package org.geeksforgeeks.digitallibrary.controller;
 
 
 import org.geeksforgeeks.digitallibrary.models.DigitalLibraryResponse;
-import org.geeksforgeeks.digitallibrary.models.CreateUserDto;
-import org.geeksforgeeks.digitallibrary.models.UpdateUserDto;
-import org.geeksforgeeks.digitallibrary.service.IUserService;
+import org.geeksforgeeks.digitallibrary.dto.CreateUserDto;
+import org.geeksforgeeks.digitallibrary.dto.UpdateUserDto;
+import org.geeksforgeeks.digitallibrary.service.core.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

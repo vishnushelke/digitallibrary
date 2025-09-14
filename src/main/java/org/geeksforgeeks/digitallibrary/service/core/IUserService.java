@@ -1,7 +1,7 @@
-package org.geeksforgeeks.digitallibrary.service;
+package org.geeksforgeeks.digitallibrary.service.core;
 
-import org.geeksforgeeks.digitallibrary.models.CreateUserDto;
-import org.geeksforgeeks.digitallibrary.models.UpdateUserDto;
+import org.geeksforgeeks.digitallibrary.dto.CreateUserDto;
+import org.geeksforgeeks.digitallibrary.dto.UpdateUserDto;
 
 public interface IUserService {
 

@@ -1,4 +1,4 @@
-package org.geeksforgeeks.digitallibrary.models;
+package org.geeksforgeeks.digitallibrary.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

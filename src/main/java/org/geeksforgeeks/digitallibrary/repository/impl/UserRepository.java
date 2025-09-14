@@ -1,6 +1,7 @@
-package org.geeksforgeeks.digitallibrary.repository;
+package org.geeksforgeeks.digitallibrary.repository.impl;
 
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
+import org.geeksforgeeks.digitallibrary.repository.jpa.UserJPARepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

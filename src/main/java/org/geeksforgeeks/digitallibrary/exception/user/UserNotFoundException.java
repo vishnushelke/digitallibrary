@@ -1,4 +1,4 @@
-package org.geeksforgeeks.digitallibrary.exception;
+package org.geeksforgeeks.digitallibrary.exception.user;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {

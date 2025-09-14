@@ -1,4 +1,4 @@
-package org.geeksforgeeks.digitallibrary.repository;
+package org.geeksforgeeks.digitallibrary.repository.jpa;
 
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
