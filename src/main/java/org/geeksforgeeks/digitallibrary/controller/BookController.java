@@ -17,11 +17,9 @@ import static org.geeksforgeeks.digitallibrary.utils.Constants.SUCCESS_STATUS;
 public class BookController {
 
     private final IBookService service;
-    private final IBookIssueService bookIssueService;
 
-    public BookController(IBookService service, IBookIssueService bookIssueService) {
+    public BookController(IBookService service) {
         this.service = service;
-        this.bookIssueService = bookIssueService;
     }
 
     @PostMapping("/create")
@@ -42,10 +40,5 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<DigitalLibraryResponse<String>> deleteBook(@PathVariable("id") long id) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.removeBookById(id), null), HttpStatus.OK);
-    }
-
-    @PostMapping("/issue")
-    public ResponseEntity<DigitalLibraryResponse<BookIssueDto>> issueBook(@RequestBody BookIssueDto bookIssueDto) {
-        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.bookIssueService.issueBook(bookIssueDto), null), HttpStatus.CREATED);
     }
 }

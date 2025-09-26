@@ -25,9 +25,11 @@ public class BookIssueEntity {
     private long id;
 
     @ManyToOne
+    @JoinColumn(name = "book")
     private BookEntity book;
 
     @ManyToOne
+    @JoinColumn(name = "user")
     private UserEntity user;
 
     @Column(name = "issue_date", nullable = false)

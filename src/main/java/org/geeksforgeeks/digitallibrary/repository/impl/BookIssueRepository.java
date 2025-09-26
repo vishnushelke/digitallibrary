@@ -1,9 +1,12 @@
 package org.geeksforgeeks.digitallibrary.repository.impl;
 
+import org.geeksforgeeks.digitallibrary.dao.BookIssueCount;
 import org.geeksforgeeks.digitallibrary.entity.BookEntity;
 import org.geeksforgeeks.digitallibrary.entity.BookIssueEntity;
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
 import org.geeksforgeeks.digitallibrary.repository.jpa.BookIssueJpaRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,7 +42,12 @@ public class BookIssueRepository {
         return this.repository.findByUser(entity);
     }
 
-    public Optional<BookIssueEntity> getIssuedBookByUserAndBook(UserEntity user, BookEntity book){
+    public Optional<BookIssueEntity> getIssuedBookByUserAndBook(UserEntity user, BookEntity book) {
         return this.repository.findByUserAndBook(user, book);
+    }
+
+    public List<BookIssueCount> getTopNBooks(int n) {
+        Pageable pageable = PageRequest.of(0, n);
+        return this.repository.findMostIssuedBooks(pageable);
     }
 }

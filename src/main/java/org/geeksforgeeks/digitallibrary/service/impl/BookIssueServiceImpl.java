@@ -1,27 +1,34 @@
 package org.geeksforgeeks.digitallibrary.service.impl;
 
+import org.geeksforgeeks.digitallibrary.dao.BookIssueCount;
 import org.geeksforgeeks.digitallibrary.dto.BookIssueDto;
 import org.geeksforgeeks.digitallibrary.entity.BookIssueEntity;
+import org.geeksforgeeks.digitallibrary.entity.UserEntity;
 import org.geeksforgeeks.digitallibrary.enums.SubscriptionType;
 import org.geeksforgeeks.digitallibrary.exception.bookIssue.BookAlreadyIssuedException;
 import org.geeksforgeeks.digitallibrary.exception.bookIssue.BookIssueLimitExceeded;
+import org.geeksforgeeks.digitallibrary.exception.user.UserNotFoundException;
 import org.geeksforgeeks.digitallibrary.mapper.dto.BookIssueDtoMapper;
 import org.geeksforgeeks.digitallibrary.repository.impl.BookIssueRepository;
+import org.geeksforgeeks.digitallibrary.repository.impl.UserRepository;
 import org.geeksforgeeks.digitallibrary.service.core.IBookIssueService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class BookIssueServiceImpl implements IBookIssueService {
 
     private final BookIssueRepository repository;
+    private final UserRepository userRepository;
     private final BookIssueDtoMapper dtoMapper;
     private final ModelMapper modelMapper;
 
-    public BookIssueServiceImpl(BookIssueRepository repository, BookIssueDtoMapper dtoMapper, ModelMapper modelMapper) {
+    public BookIssueServiceImpl(BookIssueRepository repository, UserRepository userRepository, BookIssueDtoMapper dtoMapper, ModelMapper modelMapper) {
         this.repository = repository;
+        this.userRepository = userRepository;
         this.dtoMapper = dtoMapper;
         this.modelMapper = modelMapper;
     }
@@ -43,6 +50,21 @@ public class BookIssueServiceImpl implements IBookIssueService {
         return this.modelMapper.map(bookIssue, BookIssueDto.class);
     }
 
+    @Override
+    public List<BookIssueDto> getActiveBooksIssuedForUser(long id){
+        UserEntity user = userRepository.getById(id).orElseThrow(UserNotFoundException::new);
+        return this.repository
+                .getBooksForUser(user)
+                .stream().filter( e-> !isBookIssuedExpired(e))
+                .map(e -> modelMapper.map(e, BookIssueDto.class))
+                .toList();
+    }
+
+    @Override
+    public List<BookIssueCount> topNUsedBooks(int n){
+        return this.repository.getTopNBooks(n);
+    }
+
     private int getAllowedActiveBooksForUser(SubscriptionType type) {
         int allowedBooks = 0;
         switch (type) {
@@ -62,6 +84,6 @@ public class BookIssueServiceImpl implements IBookIssueService {
     }
 
     private boolean isBookIssuedExpired(BookIssueEntity entity) {
-        return entity.getIssueDate().isAfter(entity.getExpiryDate());
+        return LocalDate.now().isAfter(entity.getExpiryDate());
     }
 }
