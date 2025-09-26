@@ -3,6 +3,8 @@ package org.geeksforgeeks.digitallibrary.exception;
 
 import org.geeksforgeeks.digitallibrary.exception.book.BookNotFoundException;
 import org.geeksforgeeks.digitallibrary.exception.book.DuplicateBookException;
+import org.geeksforgeeks.digitallibrary.exception.bookIssue.BookAlreadyIssuedException;
+import org.geeksforgeeks.digitallibrary.exception.bookIssue.BookIssueLimitExceeded;
 import org.geeksforgeeks.digitallibrary.exception.user.*;
 import org.geeksforgeeks.digitallibrary.models.DigitalLibraryResponse;
 import org.springframework.http.HttpStatus;
@@ -53,5 +55,19 @@ public class DigitalLibraryExceptionHandler extends RuntimeException {
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<DigitalLibraryResponse<?>> handleBookNotFoundException(BookNotFoundException e) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    ////////////////////////
+    //// Book Issue ////////
+    ////////////////////////
+
+    @ExceptionHandler(BookIssueLimitExceeded.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleBookIssueLimitExceeded(BookIssueLimitExceeded e) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(BookAlreadyIssuedException.class)
+    public ResponseEntity<DigitalLibraryResponse<?>> handleBookAlreadyIssuedException(BookAlreadyIssuedException e) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(FAILURE_STATUS, null, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

@@ -7,11 +7,11 @@ public interface IUserService {
 
     CreateUserDto createUser(CreateUserDto user);
 
-    CreateUserDto getUserById(int id);
+    CreateUserDto getUserById(long id);
 
-    CreateUserDto updateUser(int id, UpdateUserDto user);
+    CreateUserDto updateUser(long id, UpdateUserDto user);
 
-    String deleteUserById(int id);
+    String deleteUserById(long id);
 
-    String activateUserById(int id);
+    String activateUserById(long id);
 }

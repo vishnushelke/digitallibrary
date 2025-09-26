@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookServiceImpl implements IBookService {
 
-    private BookRepository repository;
-    private ModelMapper modelMapper;
+    private final BookRepository repository;
+    private final ModelMapper modelMapper;
 
     public BookServiceImpl(BookRepository repository, ModelMapper modelMapper) {
         this.repository = repository;

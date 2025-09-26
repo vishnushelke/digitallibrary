@@ -20,7 +20,7 @@ public class UserRepository {
         return this.jpaRepository.save(user);
     }
 
-    public Optional<UserEntity> getById(int id) {
+    public Optional<UserEntity> getById(long id) {
         return this.jpaRepository.findById(id);
     }
 
@@ -28,7 +28,7 @@ public class UserRepository {
         return this.jpaRepository.save(user);
     }
 
-    public void deleteUserById(int id) {
+    public void deleteUserById(long id) {
         this.jpaRepository.deleteById(id);
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private int id;
+    private long id;
 
     @Column(name = "first_name", columnDefinition = "varchar(32) NOT NULL", nullable = false)
     private String firstName;
@@ -38,6 +39,7 @@ public class UserEntity {
     @Column(name = "date_of_birth", columnDefinition = "varchar(32) NOT NULL", nullable = false)
     private LocalDate dateOfBirth;
 
+    @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 

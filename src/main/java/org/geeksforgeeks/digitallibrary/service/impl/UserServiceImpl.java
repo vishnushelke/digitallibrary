@@ -16,12 +16,10 @@ import java.util.List;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository repository;
-    private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository repository, ObjectMapper objectMapper, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository repository, ModelMapper modelMapper) {
         this.repository = repository;
-        this.objectMapper = objectMapper;
         this.modelMapper = modelMapper;
     }
 
@@ -40,14 +38,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public CreateUserDto getUserById(int id) {
+    public CreateUserDto getUserById(long id) {
         UserEntity entity = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
         if (!entity.isActive()) throw new InActiveUserException();
         return this.modelMapper.map(entity, CreateUserDto.class);
     }
 
     @Override
-    public CreateUserDto updateUser(int id, UpdateUserDto user) {
+    public CreateUserDto updateUser(long id, UpdateUserDto user) {
         UserEntity dbUser = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
         if (!dbUser.isActive()) throw new InActiveUserException();
         UserEntity entity = this.modelMapper.map(user, UserEntity.class);
@@ -58,7 +56,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public String deleteUserById(int id) {
+    public String deleteUserById(long id) {
         UserEntity user = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
         if (!user.isActive()) throw new UserAlreadyInActiveException();
         user.setActive(false);
@@ -67,7 +65,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public String activateUserById(int id) {
+    public String activateUserById(long id) {
         UserEntity user = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
         if (user.isActive()) throw new UserAlreadyActiveException();
         user.setActive(true);

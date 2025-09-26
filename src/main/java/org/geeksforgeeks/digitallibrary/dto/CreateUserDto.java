@@ -31,5 +31,5 @@ public class CreateUserDto {
     @Email
     private String email;
 
-    private SubscriptionType subscriptionType;
+    private SubscriptionType subscriptionType = SubscriptionType.NO_SUBSCRIPTION;
 }

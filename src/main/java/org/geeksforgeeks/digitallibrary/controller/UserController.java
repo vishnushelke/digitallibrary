@@ -27,22 +27,22 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> getUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> getUser(@PathVariable("id") Long id) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.getUserById(id), null), HttpStatus.OK);
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> updateUser(@PathVariable Integer id, @RequestBody UpdateUserDto user) {
+    public ResponseEntity<DigitalLibraryResponse<CreateUserDto>> updateUser(@PathVariable Long id, @RequestBody UpdateUserDto user) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.updateUser(id, user), null), HttpStatus.OK);
     }
 
     @PatchMapping("/activate/{id}")
-    public ResponseEntity<DigitalLibraryResponse<String>> activateUser(@PathVariable Integer id) {
+    public ResponseEntity<DigitalLibraryResponse<String>> activateUser(@PathVariable Long id) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.activateUserById(id), null), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DigitalLibraryResponse<String>> deleteUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<DigitalLibraryResponse<String>> deleteUser(@PathVariable("id") Long id) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.deleteUserById(id), null), HttpStatus.OK);
     }
 }
