@@ -36,6 +36,11 @@ public class UserController {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.updateUser(id, user), null), HttpStatus.OK);
     }
 
+    @PatchMapping("/update-password/{id}")
+    public ResponseEntity<DigitalLibraryResponse<Boolean>> updateUser(@PathVariable Long id, @RequestParam String password) {
+        return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.updatePassword(id, password), null), HttpStatus.OK);
+    }
+
     @PatchMapping("/activate/{id}")
     public ResponseEntity<DigitalLibraryResponse<String>> activateUser(@PathVariable Long id) {
         return new ResponseEntity<>(new DigitalLibraryResponse<>(SUCCESS_STATUS, this.service.activateUserById(id), null), HttpStatus.OK);

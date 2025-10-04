@@ -35,4 +35,8 @@ public class UserRepository {
     public List<UserEntity> getAllUsers() {
         return this.jpaRepository.findAll();
     }
+
+    public Optional<UserEntity> getByEmail(String email){
+        return this.jpaRepository.findUserByEmail(email);
+    }
 }

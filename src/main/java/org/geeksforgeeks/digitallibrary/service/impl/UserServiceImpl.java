@@ -1,13 +1,16 @@
 package org.geeksforgeeks.digitallibrary.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geeksforgeeks.digitallibrary.entity.UserEntity;
 import org.geeksforgeeks.digitallibrary.dto.CreateUserDto;
 import org.geeksforgeeks.digitallibrary.dto.UpdateUserDto;
 import org.geeksforgeeks.digitallibrary.exception.user.*;
 import org.geeksforgeeks.digitallibrary.repository.impl.UserRepository;
 import org.geeksforgeeks.digitallibrary.service.core.IUserService;
+import org.geeksforgeeks.digitallibrary.utils.BCryptEncryptor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,7 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository repository;
     private final ModelMapper modelMapper;
+
 
     public UserServiceImpl(UserRepository repository, ModelMapper modelMapper) {
         this.repository = repository;
@@ -33,6 +37,7 @@ public class UserServiceImpl implements IUserService {
             throw new InActiveUserException();
 
         UserEntity entity = this.modelMapper.map(user, UserEntity.class);
+        entity.setPassword(BCryptEncryptor.encryptPassword(user.getPassword()));
         this.repository.createUser(entity);
         return user;
     }
@@ -56,6 +61,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Boolean updatePassword(long id, String password) {
+        UserEntity dbUser = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
+        if (!dbUser.isActive()) throw new InActiveUserException();
+
+        dbUser.setPassword(BCryptEncryptor.encryptPassword(password));
+        repository.updateUser(dbUser);
+        return true;
+    }
+
+    @Override
     public String deleteUserById(long id) {
         UserEntity user = this.repository.getById(id).orElseThrow(UserNotFoundException::new);
         if (!user.isActive()) throw new UserAlreadyInActiveException();
@@ -71,5 +86,15 @@ public class UserServiceImpl implements IUserService {
         user.setActive(true);
         this.repository.updateUser(user);
         return "User activated with Id: " + id;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            UserEntity entity = this.repository.getByEmail(username).orElseThrow(UserNotFoundException::new);
+            return User.withUsername(entity.getEmail()).password(entity.getPassword()).build();
+        } catch (UserNotFoundException e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
     }
 }

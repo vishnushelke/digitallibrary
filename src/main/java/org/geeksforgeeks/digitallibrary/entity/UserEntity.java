@@ -43,6 +43,9 @@ public class UserEntity {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "subscriptionType", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private SubscriptionType subscriptionType = SubscriptionType.NO_SUBSCRIPTION;
